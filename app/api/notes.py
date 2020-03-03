@@ -32,3 +32,14 @@ async def update_note(id: int, note: NoteSchema):
     note_id =  await crud.put_note(id, note)
 
     return {**note.dict(), "id": note_id}
+
+
+@router.delete("/{id}/", response_model=NoteDB)
+async def delete_note(id: int):
+    note = await crud.get_note(id)
+    if not note:
+        raise HTTPException(status_code=404, detail="Note not found")
+
+    await crud.delete_note(id)
+
+    return note
