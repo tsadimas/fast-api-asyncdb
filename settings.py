@@ -18,3 +18,6 @@ DATABASE_URL = "postgresql://{}:{}@{}:{}/{}".format(
     DB_PORT,
     DB_NAME  
 )
+
+
+SECRET = "SECRET"

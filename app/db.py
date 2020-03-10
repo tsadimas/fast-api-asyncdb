@@ -3,7 +3,9 @@ from sqlalchemy import (Column, DateTime, Integer, MetaData, String, Table,
                         create_engine)
 from sqlalchemy.sql import func
 from databases import Database
-
+from sqlalchemy.ext.declarative import DeclarativeMeta, declarative_base
+from fastapi_users.db import SQLAlchemyBaseUserTable, SQLAlchemyUserDatabase
+from app.api.models import UserDB
 
 from settings import DATABASE_URL
 
@@ -28,3 +30,15 @@ notes = Table(
 
 # databases query builder
 database = Database(DATABASE_URL)
+
+
+Base: DeclarativeMeta = declarative_base()
+
+
+class UserTable(Base, SQLAlchemyBaseUserTable):
+    pass
+
+Base.metadata.create_all(engine)
+
+users = UserTable.__table__
+user_db = SQLAlchemyUserDatabase(UserDB, database, users)
